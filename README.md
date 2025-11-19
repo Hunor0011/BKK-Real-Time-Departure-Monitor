@@ -34,7 +34,7 @@ Follow these steps to set up the tool:
 Step 1: Clone the Repository
 Clone this repository using Git:
 
-    git clone https://github.com/yourusername/bkk-tram-monitor.git
+    git clone https://github.com/Hunor0011/bkk-tram-monitor.git
     cd bkk-tram-monitor
 
 Step 2: Set Up a Virtual Environment
@@ -67,7 +67,7 @@ Step 5: Input Your BKK API Key
 🏃 Usage
 To start the real-time tram monitor, run the main Python script:
 
-    python bkk_tram.py
+    python bkk_departures.py
 
 
 You'll be prompted to input a stop name. For example:  Enter a stop name to search (e.g., Zsigmond tér): Zsigmond tér
