@@ -6,7 +6,7 @@ from tabulate import tabulate  # For tabular display
 import time
 
 # BKK API Key and URL for GTFS-RT feed
-API_KEY = ""  # Replace with your actual API key
+API_KEY = "your_actual_API_key"  # Replace with your actual API key
 URL = f"https://go.bkk.hu/api/query/v1/ws/gtfs-rt/full/TripUpdates.pb?key={API_KEY}"
 
 # Static GTFS Files
