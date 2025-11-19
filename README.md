@@ -59,7 +59,7 @@ Step 4: Add Static GTFS Files
 
 Step 5: Input Your BKK API Key
 
-    Edit the bkk_tram.py file and replace the API_KEY placeholder with your actual key:
+    Edit the bkk_departures.py file and replace the API_KEY placeholder with your actual key:
     API_KEY = "your_actual_API_key"
 
 
