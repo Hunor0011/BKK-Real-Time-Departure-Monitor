@@ -1,0 +1,20 @@
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment folders
+venv/
+myenv/
+
+# System-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Editor and OS temp files
+.vscode/
+*.swp
+.idea/
