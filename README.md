@@ -20,7 +20,7 @@ Download the GTFS feed from BKK GTFS Feed to access static information about rou
  Project Structure
 Here’s what the project directory looks like after setup:
 
-      bkk-tram-monitor/
+      bkk-real-time-departure-monitor/
       ├── bkk_departures.py        # Main Python script
       ├── gtfs_realtime_pb2.py     # decodes the Protobuf-formatted GTFS-RT API data into readable Python objects
       ├── requirements.txt         # Python dependencies
