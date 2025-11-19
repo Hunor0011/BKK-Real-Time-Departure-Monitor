@@ -5,20 +5,21 @@ import pandas as pd
 from tabulate import tabulate  # For tabular display
 import time
 
-# BKK API Key and URL
+# BKK API Key and URL for GTFS-RT feed
 API_KEY = ""  # Replace with your actual API key
 URL = f"https://go.bkk.hu/api/query/v1/ws/gtfs-rt/full/TripUpdates.pb?key={API_KEY}"
 
 # Static GTFS Files
 ROUTES_FILE = "routes.txt"  # Path to routes.txt
 STOPS_FILE = "stops.txt"    # Path to stops.txt
+TRIPS_FILE = "trips.txt"    # Path to trips.txt
 
 # Time window for arrivals (in minutes)
 TIME_WINDOW_MINUTES = 5
 
 
-def load_gtfs_static_files(routes_file, stops_file):
-    """Load routes and stops from static GTFS files."""
+def load_gtfs_static_files(routes_file, stops_file, trips_file):
+    """Load routes, stops, and trips from static GTFS files."""
     # Load routes.txt to map route_id -> route_short_name (tram number)
     routes_df = pd.read_csv(routes_file)
     routes_mapping = routes_df.set_index("route_id")["route_short_name"].to_dict()
@@ -27,7 +28,11 @@ def load_gtfs_static_files(routes_file, stops_file):
     stops_df = pd.read_csv(stops_file)
     stops_mapping = stops_df.set_index("stop_id").to_dict(orient="index")
 
-    return routes_mapping, stops_mapping
+    # Load trips.txt to map trip_id -> direction_id and trip_headsign
+    trips_df = pd.read_csv(trips_file)
+    trips_mapping = trips_df.set_index("trip_id")[["direction_id", "trip_headsign"]].to_dict(orient="index")
+
+    return routes_mapping, stops_mapping, trips_mapping
 
 
 def fetch_gtfs_rt_feed(url):
@@ -45,63 +50,78 @@ def find_stops_by_name(stops_mapping, stop_name_query):
     return selected_stops
 
 
-def get_incoming_trams(feed, routes_mapping, selected_stops, current_time):
-    """Get a list of trams arriving at selected stops within the time window."""
+def get_incoming_trams(feed, routes_mapping, selected_stops, trips_mapping, current_time):
+    """Get a list of trams arriving at selected stops within the time window, showing direction."""
     incoming_trams = []
-
     for entity in feed.entity:
         if entity.HasField("trip_update"):
             trip_update = entity.trip_update
-
             for stop_time in trip_update.stop_time_update:
                 stop_id = stop_time.stop_id
-
                 # Only process relevant stops
                 if stop_id in selected_stops and stop_time.arrival.HasField("time"):
                     arrival_time = datetime.fromtimestamp(stop_time.arrival.time)
                     time_to_arrival = arrival_time - current_time
-
                     # Only include trams in the defined time window
                     if timedelta(seconds=0) <= time_to_arrival <= timedelta(minutes=TIME_WINDOW_MINUTES):
                         route_id = trip_update.trip.route_id if trip_update.trip.route_id else "Unknown Route"
                         tram_number = routes_mapping.get(route_id, "Unknown")  # Get tram number
-                        headsign = selected_stops[stop_id]["stop_name"]
 
+                        # Get trip_id to derive direction and destination
+                        trip_id = trip_update.trip.trip_id
+                        trip_info = trips_mapping.get(trip_id, {"direction_id": -1, "trip_headsign": "Unknown"})
+                        direction = "Inbound" if trip_info["direction_id"] == 1 else "Outbound"  # Derive direction
+                        destination = trip_info["trip_headsign"]  # Final stop/destination
+
+                        headsign = selected_stops[stop_id]["stop_name"]
                         incoming_trams.append({
                             "tram_number": tram_number,  # Tram number
                             "route_id": route_id,  # Internal route ID
                             "stop_name": headsign,  # Stop name
                             "arrival_time": arrival_time.strftime("%H:%M:%S"),  # Predicted time
                             "time_to_arrival": str(time_to_arrival).split(".")[0],  # Time to arrival
+                            "direction": direction,  # Inbound or Outbound
+                            "destination": destination  # Final destination
                         })
-
     return incoming_trams
 
 
 def display_real_time_board(trams):
-    """Display the real-time timetable in tabular format."""
+    """Display the real-time timetable in tabular format, grouped by direction."""
+    if not trams:
+        print("No trams arriving within the next 5 minutes.")
+        return
+
     # Sort trams by time-to-arrival
     sorted_trams = sorted(trams, key=lambda x: x["time_to_arrival"])
 
-    # Create the table data
-    table = [[
-        tram["tram_number"],
-        tram["stop_name"],
-        tram["arrival_time"],
-        tram["time_to_arrival"]
-    ] for tram in sorted_trams]
+    # Group by direction
+    grouped_by_direction = {"Inbound": [], "Outbound": []}
+    for tram in sorted_trams:
+        grouped_by_direction[tram["direction"]].append(tram)
 
-    # Define headers for the table
-    headers = ["Tram Number", "Stop Name", "Arrival Time", "Time to Arrival"]
-
-    # Print the table
-    print(tabulate(table, headers=headers, tablefmt="fancy_grid"))
+    # Display separate tables for inbound and outbound directions
+    for direction, direction_trams in grouped_by_direction.items():
+        if not direction_trams:
+            continue
+        print(f"\nDirection: {direction}")
+        table = [[
+            tram["tram_number"],
+            tram["destination"],
+            tram["stop_name"],
+            tram["arrival_time"],
+            tram["time_to_arrival"]
+        ] for tram in direction_trams]
+        # Define headers for the table
+        headers = ["Tram Number", "Destination", "Stop Name", "Arrival Time", "Time to Arrival"]
+        # Print the table for this direction
+        print(tabulate(table, headers=headers, tablefmt="fancy_grid"))
 
 
 def main():
     """Main function to allow real-time monitoring of custom stops."""
     print("Loading BKK GTFS static data...\n")
-    routes_mapping, stops_mapping = load_gtfs_static_files(ROUTES_FILE, STOPS_FILE)
+    routes_mapping, stops_mapping, trips_mapping = load_gtfs_static_files(ROUTES_FILE, STOPS_FILE, TRIPS_FILE)
 
     # Ask user for stop search query
     stop_name_query = input("Enter a stop name to search (e.g., Zsigmond tér): ").strip()
@@ -127,7 +147,7 @@ def main():
         feed = fetch_gtfs_rt_feed(URL)
 
         # Find incoming trams for the selected stops
-        trams = get_incoming_trams(feed, routes_mapping, selected_stops, current_time)
+        trams = get_incoming_trams(feed, routes_mapping, selected_stops, trips_mapping, current_time)
 
         # Clear the screen for a clean refresh
         print("\033[H\033[J")
