@@ -3,3 +3,4 @@ protobuf==4.23.4       # For decoding GTFS-RT protocol buffer feeds
 pandas==2.1.1          # For processing and filtering GTFS static files
 tabulate==0.9.0        # For creating a BKK-style timetable in the terminal
 geopy==2.4.0           # For calculating distances (if needed)
+numpy==1.26.0
