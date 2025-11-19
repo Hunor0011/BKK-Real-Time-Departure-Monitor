@@ -69,7 +69,7 @@ To start the real-time tram monitor, run the main Python script:
     python bkk_departures.py
 
 
-You'll be prompted to input a stop name. For example:  Enter a stop name to search (e.g., Zsigmond tér): Zsigmond tér
+You'll be prompted to input a stop name. For example:  Enter a stop name to search (e.g., Zsigmond tér): 
 
     The program will search for all stops matching your input.
     If multiple matching stops (or directions) exist, it will monitor all of them.
