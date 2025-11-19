@@ -84,8 +84,8 @@ Once running, the program will display a live timetable in your terminal:
     ╒═══════════════╤══════════════════════════════════════════╤═══════════════╤═════════════════╕
     │ Tram Number   │ Direction                                │ Arrival Time  │ Time to Arrival │
     ╞═══════════════╪══════════════════════════════════════════╪═══════════════╪═════════════════╡
-    │ 41            │ Bécsi út / Vörösvári út                 │ 17:00:23      │ 00:01:32        │
-    │ 17            │ Outbound (Savoya Park, etc.)            │ 17:03:33      │ 00:04:42        │
+    │ 41            │ Bécsi út / Vörösvári út                  │ 17:00:23      │ 00:01:32        │
+    │ 17            │ Outbound (Savoya Park, etc.)             │ 17:03:33      │ 00:04:42        │
     ╘═══════════════╧══════════════════════════════════════════╧═══════════════╧═════════════════╛
 
     If no trams are scheduled to arrive:
