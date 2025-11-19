@@ -12,7 +12,6 @@ Fast and Refreshing: Updates every 30 seconds to display the latest tram info.
 Before using the tool, ensure you have the following:
 
 Python 3.9+ installed.
-You can download Python here: Python Downloads .
 BKK GTFS-RT API Key:
 You can request an API key via the BKK Developer Portal . This key will give you access to real-time tram arrival data.
 GTFS Static Files (routes.txt, stops.txt):
