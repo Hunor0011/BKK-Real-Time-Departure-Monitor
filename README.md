@@ -22,11 +22,13 @@ Here’s what the project directory looks like after setup:
 
       bkk-tram-monitor/
       ├── bkk_departures.py        # Main Python script
-      ├── requirements.txt   # Python dependencies
-      ├── README.md          # Documentation for the project
-      ├── routes.txt         # GTFS routes file
-      ├── stops.txt          # GTFS stops file
-      ├── trips.txt          # GTFS trips file
+      ├── gtfs_realtime_pb2.py     # decodes the Protobuf-formatted GTFS-RT API data into readable Python objects
+      ├── requirements.txt         # Python dependencies
+      ├── README.md                # Documentation for the project
+      ├── routes.txt               # GTFS routes file
+      ├── stops.txt                # GTFS stops file
+      ├── trips.txt                # GTFS trips file
+      
 
 ⚙️ Installation
 Follow these steps to set up the tool:
