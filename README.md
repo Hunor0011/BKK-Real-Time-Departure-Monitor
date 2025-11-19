@@ -54,7 +54,7 @@ Step 3: Install Dependencies
 Step 4: Add Static GTFS Files
 
     Download the GTFS Static Feed from the official BKK GTFS feed .
-    Extract the ZIP file and locate these two files:
+    Extract the ZIP file and locate these three files:
     routes.txt
     stops.txt
     trips.txt
