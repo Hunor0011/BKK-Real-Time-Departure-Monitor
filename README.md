@@ -22,7 +22,7 @@ Download the GTFS feed from BKK GTFS Feed to access static information about rou
 Here’s what the project directory looks like after setup:
 
       bkk-tram-monitor/
-      ├── bkk_tram.py        # Main Python script
+      ├── bkk_departures.py        # Main Python script
       ├── requirements.txt   # Python dependencies
       ├── README.md          # Documentation for the project
       ├── routes.txt         # GTFS routes file
@@ -81,12 +81,28 @@ Once running, the program will display a live timetable in your terminal:
 
     Real-Time Tram Timetable for Stops: Zsigmond tér (Next 5 Minutes):
 
-    ╒═══════════════╤══════════════════════════════════════════╤═══════════════╤═════════════════╕
-    │ Tram Number   │ Direction                                │ Arrival Time  │ Time to Arrival │
-    ╞═══════════════╪══════════════════════════════════════════╪═══════════════╪═════════════════╡
-    │ 41            │ Bécsi út / Vörösvári út                  │ 17:00:23      │ 00:01:32        │
-    │ 17            │ Outbound (Savoya Park, etc.)             │ 17:03:33      │ 00:04:42        │
-    ╘═══════════════╧══════════════════════════════════════════╧═══════════════╧═════════════════╛
+
+    Direction: Inbound
+    ╒═══════════════╤═════════════════════════╤══════════════╤════════════════╤═══════════════════╕
+    │   Tram Number │ Destination             │ Stop Name    │ Arrival Time   │ Time to Arrival   │
+    ╞═══════════════╪═════════════════════════╪══════════════╪════════════════╪═══════════════════╡
+    │             9 │ Óbuda, Bogdáni út       │ Zsigmond tér │ 18:03:59       │ 0:00:56           │
+    ├───────────────┼─────────────────────────┼──────────────┼────────────────┼───────────────────┤
+    │            41 │ Bécsi út / Vörösvári út │ Zsigmond tér │ 18:04:34       │ 0:01:31           │
+    ╘═══════════════╧═════════════════════════╧══════════════╧════════════════╧═══════════════════╛
+    
+    Direction: Outbound
+    ╒═══════════════╤═════════════════════════╤══════════════╤════════════════╤═══════════════════╕
+    │   Tram Number │ Destination             │ Stop Name    │ Arrival Time   │ Time to Arrival   │
+    ╞═══════════════╪═════════════════════════╪══════════════╪════════════════╪═══════════════════╡
+    │             9 │ Kőbánya alsó vasútáll.  │ Zsigmond tér │ 18:03:03       │ 0:00:00           │
+    ├───────────────┼─────────────────────────┼──────────────┼────────────────┼───────────────────┤
+    │            17 │ Bécsi út / Vörösvári út │ Zsigmond tér │ 18:05:39       │ 0:02:36           │
+    ├───────────────┼─────────────────────────┼──────────────┼────────────────┼───────────────────┤
+    │            41 │ Balatoni út             │ Zsigmond tér │ 18:07:00       │ 0:03:57           │
+    ╘═══════════════╧═════════════════════════╧══════════════╧════════════════╧═══════════════════╛
+
+
 
     If no trams are scheduled to arrive:
 
