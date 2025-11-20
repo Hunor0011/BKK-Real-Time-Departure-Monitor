@@ -1,5 +1,5 @@
 
-🚌 BKK Real-Time Vehicle Monitor
+🚌 BKK Real-Time Departure Monitor
 stays on top of Budapest's vehicle schedule in real-time with this Python-based tool! This program fetches live data from the BKK GTFS-RT API to display a BKK-style timetable for any chosen stop. It shows the vehicle number, direction, arrival time, and time-to-arrival, updated every 30 seconds.
 
 🚀 Features
