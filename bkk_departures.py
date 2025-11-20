@@ -116,7 +116,7 @@ def main():
     routes_mapping, stops_mapping, trips_mapping = load_gtfs_static_files(ROUTES_FILE, STOPS_FILE, TRIPS_FILE)
 
     # Ask user for stop search query
-    stop_name_query = input("Enter a stop name to search (e.g., Zsigmond tér): ").strip()
+    stop_name_query = input("Enter a stop name to search : ").strip()
     selected_stops = find_stops_by_name(stops_mapping, stop_name_query)
 
     # If no stops are found
